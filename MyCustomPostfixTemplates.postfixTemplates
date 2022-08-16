@@ -1,0 +1,47 @@
+## pupu conversions ##
+
+.empty : check if it is empty
+	java.lang.CharSequence[com.pupu.utils.StringUtils]     →  com.pupu.utils.StringUtils.isEmpty($expr$)
+	java.util.Collection[com.pupu.utils.CollectionUtils]     →  com.pupu.utils.CollectionUtils.isEmpty($expr$)
+	java.util.Map[com.pupu.utils.CollectionUtils]     →  com.pupu.utils.CollectionUtils.isEmpty($expr$)
+
+.notempty : check if it is not empty
+	java.lang.CharSequence[com.pupu.utils.StringUtils]     →  com.pupu.utils.StringUtils.isNotEmpty($expr$)
+	java.util.Collection[com.pupu.utils.CollectionUtils]     →  com.pupu.utils.CollectionUtils.isNotEmpty($expr$)
+
+.mapto : clone a object
+	java.util.Collection[com.pupu.utils.ReflectUtils]     →  com.pupu.utils.ReflectUtils.map($expr$, $className#:classNameComplete()$.class)
+	java.lang.Object[com.pupu.utils.ReflectUtils]     →  com.pupu.utils.ReflectUtils.map($expr$, $className#:classNameComplete()$.class)
+
+.uuid : check if String is valid uuid
+	java.lang.String[com.pupu.utils.UUIDUtils]     →  com.pupu.utils.UUIDUtils.isUUID($expr$)
+
+## private 
+.equals :  safely check if two objects are equal
+	java.lang.Object     →  java.util.Objects.equals($expr$, $object$)
+
+.singleList :  object to singleList
+	NON_VOID     →  java.util.Collections.singletonList($expr$)
+
+.singleSet :  object to singleSet
+	NON_VOID     →  java.util.Collections.singleton($expr$)
+
+.notnull : Stream not null
+	java.util.stream.Stream  →  $expr$.filter(java.util.Objects::notnull)
+
+.idmap : Collection to Map
+	java.util.stream.Stream  →  $expr$.collect(Collectors.toMap(e -> e.getId(), java.util.function.Function.identity()))
+	java.util.Collection  →  $expr$.stream().collect(Collectors.toMap(e -> e.getId(), java.util.function.Function.identity()))
+
+.mock : build DTO instance
+	java.lang.Class[com.pupu.unittest.datamock.Mock]  →  com.pupu.unittest.datamock.Mock.mock($expr$)
+
+## common simple method ##
+
+.json :  object to json
+	java.lang.Object[com.alibaba.fastjson.JSON]  →  com.alibaba.fastjson.JSON.toJSONString($expr$)
+.fromjson: parse json to object
+	java.lang.String[com.alibaba.fastjson.JSON]  →  com.alibaba.fastjson.JSON.parse($expr$, $object$)
+
+.throw: throw a pupu illegal argument exception
+	java.lang.CharSequence[com.pupu.exceptions.PupuIllegalArgumentException]     →  throw new com.pupu.exceptions.PupuIllegalArgumentException(-1, $expr$)
